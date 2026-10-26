@@ -13,9 +13,8 @@ import {
 
 type AuthMode = 'login' | 'register'
 
-const demoSessionStorageKey = 'demo-monitoring-authenticated'
 const authMode = ref<AuthMode>('login')
-const isAuthenticated = ref(sessionStorage.getItem(demoSessionStorageKey) === 'true')
+const isAuthenticated = ref(false)
 const isDarkMode = ref(true)
 const isSidebarCollapsed = ref(false)
 const route = useRoute()
@@ -162,7 +161,6 @@ function submitAuth() {
 
   if (result.ok && authMode.value === 'login') {
     isAuthenticated.value = true
-    sessionStorage.setItem(demoSessionStorageKey, 'true')
   } else if (result.ok) {
     authMode.value = 'login'
   }
@@ -171,7 +169,6 @@ function submitAuth() {
 function logout() {
   if (journeyState.value === 'tracking') stopJourney()
   isAuthenticated.value = false
-  sessionStorage.removeItem(demoSessionStorageKey)
   activeMenu.value = 'home'
   form.password = ''
   message.value = 'Anda sudah keluar dari dashboard demo.'
